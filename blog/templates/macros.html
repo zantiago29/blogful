@@ -6,12 +6,15 @@
                 {{ entry.datetime | dateformat("%d/%m/%y") }}
             </li>
         </ul>
+        <a href="/entry/{{entry.id}}/edit" title="Click to edit entry">Edit Entry</a><br>
+        <a href="/entry/{{entry.id}}/delete" title="Click to delete entry">Delete Entry</a>
     </div>
     <div class="col-md-10">
         <h1>
             {{ entry.title }}
         </h1>
         {{ entry.content | markdown }}
+        <a href="/entry/{{entry.id}}" title="Click to go to entry">{{ entry.title }}</a>
     </div>
 </div>
 {% endmacro %}
