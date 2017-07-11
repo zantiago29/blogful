@@ -1,20 +1,17 @@
 from flask import render_template
 from flask import request, redirect, url_for
-
 from . import app
 from .database import session, Entry
-
 # Mistune - markdown parser for submitting formatted blog posts ##ask for clarification
 import mistune
-
 # Html2Text - convert html to markdown ##ask for clarification
 import html2text
-
 from flask import flash
 from flask_login import login_user
 from werkzeug.security import check_password_hash
 from .database import User
 from flask_login import login_required
+from flask_login import current_user
 
 PAGINATE_BY = 10
 
@@ -56,6 +53,7 @@ def add_entry_post():
     entry = Entry(
         title=request.form["title"],
         content=request.form["content"],
+        author=current_user
     )
     session.add(entry)
     session.commit()
