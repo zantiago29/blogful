@@ -12,6 +12,7 @@ from werkzeug.security import check_password_hash
 from .database import User
 from flask_login import login_required
 from flask_login import current_user
+from flask.ext.login import login_user, login_required, current_user, logout_user, AnonymousUserMixin
 
 PAGINATE_BY = 10
 
@@ -69,6 +70,7 @@ def single_entry(id=1):
         
 # GET request for editing existing entry
 @app.route("/entry/<int:id>/edit", methods=["GET"])
+@login_required
 def edit_entry_get(id=1):
     entry = session.query(Entry)
     entry = entry.filter(Entry.id == id).first()
@@ -76,6 +78,7 @@ def edit_entry_get(id=1):
         
 # POST request for editing existing entry
 @app.route("/entry/<int:id>/edit", methods=["POST"])
+@login_required
 def edit_post_post(id=1):
     entry = session.query(Entry)
     entry = entry.filter(Entry.id == id).first()
@@ -86,6 +89,7 @@ def edit_post_post(id=1):
 
 # GET request for deleting existing post
 @app.route("/entry/<int:id>/delete", methods=["GET"])
+@login_required
 def delete_entry_get(id=1):
     entry = session.query(Entry)
     entry = entry.filter(Entry.id == id).first()
@@ -93,6 +97,7 @@ def delete_entry_get(id=1):
 
 # POST request for deleting existing post
 @app.route("/entry/<int:id>/delete", methods=["POST"])
+@login_required
 def delete_post_delete(id=1):
     entry = session.query(Entry)
     entry = entry.filter(Entry.id == id).first()
@@ -115,3 +120,9 @@ def login_post():
 
     login_user(user)
     return redirect(request.args.get('next') or url_for("entries"))
+    
+# Logout
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login_get"))
